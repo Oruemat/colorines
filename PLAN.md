@@ -51,7 +51,7 @@ Aplicacion Dibujo/
 | 5 | Guardado | Autoguardado por dibujo (IndexedDB), miniaturas, galería 📷, compartir/descargar/eliminar | ✅ |
 | 6 | Sonido | Rasgueo al pintar, sonidos de pegatinas/deshacer/borrar/foto, confeti, vibración, voz con el nombre | ✅ |
 | 7 | PWA | Manifest, service worker (`sw.js`), iconos 192/512, pantalla completa, modo avión probado | ✅ |
-| 8 | Publicación | GitHub Pages con Actions (`.github/workflows/pages.yml`), instalación en la tablet | ⏳ |
+| 8 | Publicación | GitHub Pages con Actions → https://oruemat.github.io/colorines/ (falta instalar en la tablet) | ✅ |
 
 ## Publicar y actualizar
 1. Repositorio público `colorines` en GitHub, con Pages → Source: **GitHub Actions**.
