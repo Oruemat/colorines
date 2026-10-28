@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Vista previa de dibujos</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #eee; margin: 12px; }
+    h2 { margin: 16px 0 8px; }
+    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    figure { margin: 0; background: #fff; border-radius: 12px; padding: 8px; }
+    figure div { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    svg { width: 100%; display: block; border: 1px solid #ddd; border-radius: 8px; background: #fff; }
+    figcaption { font-weight: 700; text-align: center; margin-top: 4px; }
+    .err { color: #c00; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div id="out"></div>
+  <script src="js/art.js"></script>
+  <script src="js/drawings/granja.js"></script>
+  <script src="js/drawings/selva.js"></script>
+  <script src="js/drawings/dinosaurios.js"></script>
+  <script src="js/drawings/mar.js"></script>
+  <script src="js/drawings/vehiculos.js"></script>
+  <script src="js/drawings/espacio.js"></script>
+  <script src="js/drawings/comida.js"></script>
+  <script src="js/drawings/insectos.js"></script>
+  <script src="js/drawings/naturaleza.js"></script>
+  <script src="js/drawings/juguetes.js"></script>
+  <script src="js/drawings/mascotas.js"></script>
+  <script src="js/drawings/polo.js"></script>
+  <script src="js/engine.js"></script>
+  <script>
+    // ?cat=mar,selva muestra solo esos temas. Izquierda: coloreado; derecha: contorno que verá el niño.
+    const only = new URLSearchParams(location.search).get('cat');
+    const pick = only ? only.split(',') : null;
+    const out = document.getElementById('out');
+    for (const cat of ART.categories) {
+      if (pick && !pick.includes(cat.id)) continue;
+      let html = `<h2>${cat.icon} ${cat.name} (${cat.drawings.length})</h2><div class="grid">`;
+      for (const d of cat.drawings) {
+        let a, b;
+        try { a = ENGINE.colorSVG(d); b = ENGINE.lineSVG(d); }
+        catch (e) { a = `<p class="err">${e.message}</p>`; b = ''; }
+        html += `<figure><div>${a}${b}</div><figcaption>${d.id} · ${d.name}</figcaption></figure>`;
+      }
+      out.insertAdjacentHTML('beforeend', html + '</div>');
+    }
+  </script>
+</body>
+</html>

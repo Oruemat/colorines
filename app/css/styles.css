@@ -1,0 +1,230 @@
+:root {
+  --bg: #cfeafe; /* cielo: hace resaltar el lienzo blanco */
+  --ink: #2b2d42;
+  --card: #ffffff;
+  --accent: #ff8c42;
+  --shadow: 0 6px 0 rgba(43, 45, 66, 0.14);
+  --shadow-press: 0 2px 0 rgba(43, 45, 66, 0.14);
+  --btn: 72px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Baloo 2", "Nunito", system-ui, sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+}
+
+button { font: inherit; color: inherit; cursor: pointer; }
+
+.screen { position: fixed; inset: 0; display: none; }
+.screen.active { display: flex; }
+
+/* ---------- Inicio y galería ---------- */
+#home, #gallery {
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: max(16px, env(safe-area-inset-top)) 16px 24px;
+  overflow-y: auto;
+}
+.topbar { display: flex; align-items: center; gap: 12px; width: min(1100px, 100%); }
+.topbar h1 { flex: 1; font-size: clamp(32px, 6vw, 60px); line-height: 1.1; font-weight: 800; }
+
+.tabs {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  width: min(1100px, 100%);
+  padding: 6px 4px 14px;
+  scrollbar-width: none;
+  flex-shrink: 0;
+}
+.tab {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 100px;
+  padding: 10px 14px 8px;
+  border: none;
+  border-radius: 24px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  font-size: 42px;
+  line-height: 1.1;
+  transition: transform 0.12s;
+}
+.tab span { font-size: 17px; font-weight: 800; }
+.tab.on { background: var(--accent); color: #fff; transform: translateY(-3px); }
+
+.card img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 20px; }
+.empty { font-size: 96px; opacity: 0.4; margin-top: 12vh; }
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(220px, 42vw), 1fr));
+  gap: 20px;
+  width: min(1100px, 100%);
+}
+.card {
+  border: none;
+  border-radius: 28px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  padding: 10px;
+  aspect-ratio: 1;
+  transition: transform 0.15s;
+}
+.card:active { transform: scale(0.94); }
+.card svg { width: 100%; height: 100%; display: block; border-radius: 20px; }
+
+/* ---------- Pintar ---------- */
+#play { gap: 12px; padding: 12px; }
+
+.stage-wrap {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  container-type: size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.stage {
+  position: relative;
+  width: min(100cqw, 100cqh);
+  height: min(100cqw, 100cqh);
+  border-radius: 24px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: var(--shadow);
+  touch-action: none;
+}
+.stage canvas, .stage .lines, .stage .lines svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.stage .lines, .stage .stickers, .stage .fx { pointer-events: none; }
+
+.panel {
+  width: min(280px, 32vw);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+  padding: 4px 4px 10px;
+}
+.row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+
+.btn {
+  width: var(--btn);
+  height: var(--btn);
+  border: none;
+  border-radius: 22px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  font-size: 36px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.btn:active { transform: translateY(4px); box-shadow: var(--shadow-press); }
+.btn.on { box-shadow: 0 0 0 5px var(--accent), var(--shadow); }
+.btn:disabled { opacity: 0.35; }
+
+/* Botón que hay que mantener pulsado: anillo de progreso */
+.btn.hold::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 26px;
+  background: conic-gradient(var(--accent) calc(var(--p, 0) * 1%), transparent 0);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  padding: 5px;
+  pointer-events: none;
+}
+.armed { animation: wobble 0.4s ease-in-out infinite; box-shadow: 0 0 0 5px #ff3b30, var(--shadow); }
+@keyframes wobble { 0%, 100% { rotate: 0deg; } 25% { rotate: -8deg; } 75% { rotate: 8deg; } }
+
+.size-dot { display: block; border-radius: 50%; background: var(--ink); }
+
+.swatches { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 0 6px; }
+.swatch {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  box-shadow: var(--shadow);
+  font-size: 34px;
+  display: grid;
+  place-items: center;
+  transition: transform 0.12s;
+}
+.swatch.emoji { background: var(--card); border-radius: 22px; }
+.swatch.on { transform: scale(1.12); border-color: var(--ink); }
+
+/* Flash de la cámara */
+.flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
+.flash.go { animation: flash 0.5s ease-out; }
+@keyframes flash { from { opacity: 0.95; } to { opacity: 0; } }
+
+/* ---------- Ventanas (visor y ajustes) ---------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(43, 45, 66, 0.55);
+}
+.overlay[hidden] { display: none; }
+.sheet {
+  width: min(560px, 100%);
+  max-height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px;
+  border-radius: 28px;
+  background: var(--card);
+}
+.sheet h2 { font-size: 32px; font-weight: 800; }
+.opt {
+  border: none;
+  border-radius: 20px;
+  background: var(--bg);
+  padding: 16px 18px;
+  font-size: 22px;
+  font-weight: 700;
+  text-align: left;
+}
+.opt small { font-size: 15px; opacity: 0.7; }
+.viewer { width: min(760px, 100%); align-items: center; }
+.viewer-pic img { display: block; max-width: 100%; max-height: 68vh; border-radius: 20px; box-shadow: var(--shadow); }
+
+/* Zurdo: panel a la izquierda (en horizontal) */
+@media (orientation: landscape) {
+  #play.left { flex-direction: row-reverse; }
+}
+
+/* Vertical: panel abajo */
+@media (orientation: portrait) {
+  #play { flex-direction: column; }
+  .panel { width: 100%; max-height: 40vh; flex-direction: row; flex-wrap: wrap; justify-content: center; align-content: flex-start; }
+  .swatches { grid-template-columns: repeat(6, var(--btn)); padding: 0; }
+}
