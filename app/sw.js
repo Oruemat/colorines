@@ -1,6 +1,6 @@
 // Service worker: guarda la app para que funcione sin internet.
 // Al publicar cambios hay que subir VERSION para que la tablet descargue lo nuevo.
-const VERSION = 'colorines-v1';
+const VERSION = 'colorines-v2';
 const FONTS = 'colorines-fonts';
 const DRAWINGS = ['granja', 'selva', 'dinosaurios', 'mar', 'vehiculos', 'espacio', 'comida',
   'insectos', 'naturaleza', 'juguetes', 'mascotas', 'polo'];
