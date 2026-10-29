@@ -465,6 +465,7 @@
         b.style.background = c;
         b.onclick = () => {
           state.color = c;
+          AUDIO.say(TOOLS.colorNames[c]);
           if (state.tool === 'eraser') state.tool = 'pencil';
           AUDIO.tap();
           refresh();

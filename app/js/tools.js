@@ -24,6 +24,14 @@
       '#a2694b', '#2b2d42', '#ffffff',
     ],
 
+    // Lo que dice la voz al elegir cada color.
+    colorNames: {
+      '#ff3b30': 'Rojo', '#ff9500': 'Naranja', '#ffd60a': 'Amarillo',
+      '#8bd346': 'Verde claro', '#20b25a': 'Verde', '#5ac8fa': 'Celeste',
+      '#0a6cff': 'Azul', '#a05cf0': 'Morado', '#ff6fb5': 'Rosa',
+      '#a2694b': 'Marrón', '#2b2d42': 'Negro', '#ffffff': 'Blanco',
+    },
+
     stickers: ['⭐', '❤️', '🌸', '🦋', '🐞', '🌈', '☀️', '🎈', '🐟', '🍎', '🚗', '🐶'],
 
     // Grosor del trazo y tamaño de las pegatinas, en unidades del dibujo.
